@@ -27,11 +27,6 @@ define "Logic", [ "Input", "Entities", "Vec2" ], ( Input, Entities, Vec2 ) ->
 	module =
 		createGameState: ->
 			gameState =
-				# Change this, if you want the camera to point somewhere else.
-				focus: [ 0, 0 ]
-
-				# Game entities are made up of components. The components will
-				# be stored in this map.
 				components: {}
 
 		initGameState: ( gameState ) ->
@@ -48,21 +43,4 @@ define "Logic", [ "Input", "Entities", "Vec2" ], ( Input, Entities, Vec2 ) ->
 					gameState.components,
 					entityId )
 
-			createEntity( "myEntity", {
-				center: [ 0, 0 ]
-				radius: 50,
-				speed : 2 } )
-			createEntity( "myEntity", {
-				center: [ 0, 0 ]
-				radius: 100,
-				speed : -1 } )
-
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
-			for entityId, position of gameState.components.positions
-				movement = gameState.components.movements[ entityId ]
-
-				angle = timeInS * movement.speed
-				position[ 0 ] = movement.radius * Math.cos( angle )
-				position[ 1 ] = movement.radius * Math.sin( angle )
-
-				Vec2.add( position, currentInput.pointerPosition )
