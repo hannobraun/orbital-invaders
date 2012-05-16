@@ -42,8 +42,8 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 				guiSubscribers: Events.createSubscribers()
 				orbitSelection:
 					currentlySelecting: false
-					startingPoint     : [ 0, 0 ]
-					currentPoint      : [ 0, 0 ]
+					startingPoint     : null
+					currentPoint      : null
 
 		initRenderState: ( renderState ) ->
 			publishSelectOrbit = ( orbit ) ->
