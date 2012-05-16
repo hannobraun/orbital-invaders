@@ -20,7 +20,11 @@ module "Game", [ "Images", "Rendering", "Input", "MainLoop", "Logic", "Graphics"
 		gameState    = Logic.createGameState()
 		renderState  = Graphics.createRenderState()
 
-		Logic.initGameState( gameState )
+		Logic.initGameState(
+			gameState,
+			renderState.guiSubscribers )
+		Graphics.initRenderState(
+			renderState )
 
 		MainLoop.execute ( currentTimeInS, passedTimeInS ) ->
 			Logic.updateGameState(
@@ -30,7 +34,8 @@ module "Game", [ "Images", "Rendering", "Input", "MainLoop", "Logic", "Graphics"
 				passedTimeInS )
 			Graphics.updateRenderState(
 				renderState,
-				gameState )
+				gameState,
+				currentInput )
 			Rendering.render(
 				Rendering.drawFunctions,
 				display,

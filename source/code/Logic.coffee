@@ -1,4 +1,4 @@
-module "Logic", [ "Input", "Entities", "Vec2" ], ( Input, Entities, Vec2 ) ->
+module "Logic", [ "Input", "Entities", "Vec2", "Events" ], ( Input, Entities, Vec2, Events ) ->
 	nextEntityId = 0
 
 	entityFactories =
@@ -24,12 +24,17 @@ module "Logic", [ "Input", "Entities", "Vec2" ], ( Input, Entities, Vec2 ) ->
 	createEntity  = null
 	destroyEntity = null
 
+	addSelectOrbitHandler = ( guiSubscribers ) ->
+		Events.subscribe guiSubscribers, "select orbit", [ Events.anyTopic ], ( orbit ) ->
+			console.log( orbit.periapsis, orbit.apoapsis )
+
+
 	module =
 		createGameState: ->
 			gameState =
 				components: {}
 
-		initGameState: ( gameState ) ->
+		initGameState: ( gameState, guiSubscribers ) ->
 			# These are the shortcuts we will use for creating and destroying
 			# entities.
 			createEntity = ( type, args ) ->
@@ -42,5 +47,7 @@ module "Logic", [ "Input", "Entities", "Vec2" ], ( Input, Entities, Vec2 ) ->
 				Entities.destroyEntity(
 					gameState.components,
 					entityId )
+
+			addSelectOrbitHandler( guiSubscribers )
 
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
