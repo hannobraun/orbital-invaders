@@ -1,4 +1,4 @@
-module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input" ], ( Rendering, Camera, Vec2, Events, Input ) ->
+module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" ], ( Rendering, Camera, Vec2, Events, Input, Orbits ) ->
 	publishSelectOrbit = null
 
 	handleOrbitSelection = ( orbitSelection, currentInput ) ->
@@ -15,23 +15,11 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input" ], ( Rende
 					Vec2.copy( currentInput.pointerPosition )
 		else
 			if orbitSelection.currentlySelecting
-				periapsis = null
-				apoapsis  = null
+				orbit = Orbits.createOrbit(
+					orbitSelection.startingPoint,
+					orbitSelection.currentPoint )
 
-				startingPointIsPeriapsis =
-					Vec2.squaredLength( orbitSelection.startingPoint ) <=
-					Vec2.squaredLength( orbitSelection.currentPoint )
-
-				if startingPointIsPeriapsis
-					periapsis = orbitSelection.startingPoint
-					apoapsis  = orbitSelection.currentPoint
-				else
-					periapsis = orbitSelection.currentPoint
-					apoapsis  = orbitSelection.startingPoint
-
-				publishSelectOrbit( {
-					periapsis : periapsis
-					apoapsis  : apoapsis } )
+				publishSelectOrbit( orbit )
 
 				orbitSelection.currentlySelecting = false
 
