@@ -25,7 +25,7 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 		[ periapsis, apoapsis ]
 
 	module =
-		createOrbit: ( auxiliaryEndpoint, significantEndpoint ) ->
+		orbitFromEndpoints: ( auxiliaryEndpoint, significantEndpoint ) ->
 			correctAuxiliaryEndpoint(
 				auxiliaryEndpoint,
 				significantEndpoint )

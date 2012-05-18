@@ -1,13 +1,13 @@
 Orbits = load( "Orbits" )
 
 describe "Orbits", ->
-	describe "createOrbit", ->
+	describe "orbitFromEndpoints", ->
 		it "should create an orbit from two endpoints", ->
 			endpointA = [ -10, 0  ]
 			endpointB = [  20, 0 ]
 
-			orbitA = Orbits.createOrbit( endpointA, endpointB )
-			orbitB = Orbits.createOrbit( endpointB, endpointA )
+			orbitA = Orbits.orbitFromEndpoints( endpointA, endpointB )
+			orbitB = Orbits.orbitFromEndpoints( endpointB, endpointA )
 
 			expect( orbitA ).to.eql( {
 				periapsis: endpointA
@@ -17,8 +17,8 @@ describe "Orbits", ->
 		it "should correct the first endpoint, if it doesn't match with the second", ->
 			significantEndpoint = [ 20, 0 ]
 
-			orbitA = Orbits.createOrbit( [  0, -10 ], significantEndpoint )
-			orbitB = Orbits.createOrbit( [ 10,   0 ], significantEndpoint )
+			orbitA = Orbits.orbitFromEndpoints( [  0, -10 ], significantEndpoint )
+			orbitB = Orbits.orbitFromEndpoints( [ 10,   0 ], significantEndpoint )
 
 			expect( orbitA ).to.eql( {
 				periapsis: [ -10, 0 ]

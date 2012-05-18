@@ -15,7 +15,7 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 					Vec2.copy( currentInput.pointerPosition )
 		else
 			if orbitSelection.currentlySelecting
-				orbit = Orbits.createOrbit(
+				orbit = Orbits.orbitFromEndpoints(
 					orbitSelection.startingPoint,
 					orbitSelection.currentPoint )
 
