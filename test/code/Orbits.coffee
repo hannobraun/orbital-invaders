@@ -3,7 +3,7 @@ Orbits = load( "Orbits" )
 describe "Orbits", ->
 	describe "orbitFromEndpoints", ->
 		it "should create an orbit from two endpoints", ->
-			endpointA = [ -10, 0  ]
+			endpointA = [ -10, 0 ]
 			endpointB = [  20, 0 ]
 
 			orbitA = Orbits.orbitFromEndpoints( endpointA, endpointB )
