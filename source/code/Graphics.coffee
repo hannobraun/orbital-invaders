@@ -32,7 +32,8 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 			appendPlanet(
 				renderState.renderables )
 			appendOrbitSelection(
-				renderState.orbitSelection )
+				renderState.orbitSelection,
+				renderState.renderables )
 
 
 			Camera.transformRenderables(
@@ -70,8 +71,28 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 
 		renderables.push( renderable )
 
-	appendOrbitSelection = ( orbitSelection ) ->
-		# nothing yet
+	appendOrbitSelection = ( orbitSelection, renderables ) ->
+		if orbitSelection.currentlySelecting
+			orbit = Orbits.orbitFromEndpoints(
+				orbitSelection.startingPoint,
+				orbitSelection.currentPoint )
+
+			renderable = Rendering.createRenderable( "ellipse" )
+
+			renderable.position    = orbit.focalToCenter
+			renderable.orientation = Math.atan2(
+				orbit.focalToCenter[ 1 ],
+				orbit.focalToCenter[ 0 ] )
+
+			renderable.resource =
+				color: "rgb(255,255,255)"
+				semiMajorAxis: orbit.semiMajorAxis
+				semiMinorAxis: orbit.semiMinorAxis
+
+			renderables.push( renderable )
+
+
+
 
 
 	module
