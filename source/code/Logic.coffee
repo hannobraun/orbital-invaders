@@ -26,7 +26,7 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events" ], ( Input, Entities, Ve
 
 	addSelectOrbitHandler = ( guiSubscribers ) ->
 		Events.subscribe guiSubscribers, "select orbit", [ Events.anyTopic ], ( orbit ) ->
-			console.log( orbit.periapsis, orbit.apoapsis )
+			console.log( orbit )
 
 
 	module =

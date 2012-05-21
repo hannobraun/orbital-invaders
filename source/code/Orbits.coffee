@@ -1,4 +1,44 @@
 module "Orbits", [ "Vec2" ], ( Vec2 ) ->
+	module =
+		mu: 5e4
+
+		orbitFromEndpoints: ( auxiliaryEndpoint, significantEndpoint, parameters ) ->
+			mu = if parameters?
+				mu = parameters.mu
+			else
+				module.mu
+
+			correctAuxiliaryEndpoint(
+				auxiliaryEndpoint,
+				significantEndpoint )
+
+			[ periapsis, apoapsis ] = determineApses(
+				auxiliaryEndpoint,
+				significantEndpoint )
+
+			periapsisDistance = Vec2.length( periapsis )
+			apoapsisDistance  = Vec2.length( apoapsis )
+
+			eccentricity  = computeEccentricity(
+				periapsisDistance,
+				apoapsisDistance )
+
+			semiMajorAxis = computeSemiMajorAxis(
+				periapsisDistance,
+				eccentricity )
+			semiMinorAxis = computeSemiMinorAxis( semiMajorAxis, eccentricity )
+			focalToCenter = computeFocalToCenter(
+				periapsis,
+				eccentricity,
+				semiMajorAxis,
+				semiMinorAxis,
+				mu )
+
+			orbit =
+				semiMajorAxis: semiMajorAxis
+				semiMinorAxis: semiMinorAxis
+				focalToCenter: focalToCenter
+
 	correctAuxiliaryEndpoint = ( auxiliaryEndpoint, significantEndpoint ) ->
 		auxiliaryDistance = Vec2.length( auxiliaryEndpoint )
 
@@ -7,7 +47,7 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 
 		Vec2.unit( auxiliaryEndpoint )
 		Vec2.scale( auxiliaryEndpoint, -auxiliaryDistance )
-		
+
 	determineApses = ( auxiliaryEndpoint, significantEndpoint ) ->
 		auxiliaryEndpointIsPeriapsis =
 			Vec2.squaredLength( auxiliaryEndpoint ) <=
@@ -24,16 +64,67 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 
 		[ periapsis, apoapsis ]
 
-	module =
-		orbitFromEndpoints: ( auxiliaryEndpoint, significantEndpoint ) ->
-			correctAuxiliaryEndpoint(
-				auxiliaryEndpoint,
-				significantEndpoint )
+	computeEccentricity = ( periapsisDistance, apoapsisDistance ) ->
+		dPe = periapsisDistance
+		dAp = apoapsisDistance
 
-			[ periapsis, apoapsis ] = determineApses(
-				auxiliaryEndpoint,
-				significantEndpoint )
+		( dAp - dPe ) / ( dAp + dPe )
 
-			orbit =
-				periapsis: periapsis
-				apoapsis : apoapsis
+	computeSemiMajorAxis = ( periapsisDistance, eccentricity ) ->
+		periapsisDistance / ( 1 - eccentricity )
+
+	computeSemiMinorAxis = ( semiMajorAxis, eccentricity ) ->
+		semiMajorAxis * Math.sqrt( 1 - eccentricity*eccentricity )
+
+	computeFocalToCenter = ( periapsis, eccentricity, semiMajorAxis, semiMinorAxis, mu ) ->
+		velocityAtPeriapsis = computeVelocityAtPeriapsis(
+			periapsis,
+			eccentricity,
+			semiMajorAxis,
+			mu )
+		eccentricityVector = computeEccentricityVectorFromStateVectors(
+			periapsis,
+			velocityAtPeriapsis,
+			mu )
+		focalDistance = computeFocalDistance( semiMajorAxis, semiMinorAxis )
+
+		focalToCenter = Vec2.copy( eccentricityVector )
+		Vec2.unit( focalToCenter )
+		Vec2.scale( focalToCenter, -focalDistance )
+
+		focalToCenter
+
+	computeVelocityAtPeriapsis = ( periapsis, eccentricity, semiMajorAxis, mu ) ->
+		speed = Math.sqrt(
+			( ( 1 + eccentricity ) * mu ) /
+			( ( 1 - eccentricity ) * semiMajorAxis ) )
+
+		velocity = Vec2.copy( periapsis )
+		velocity = [ -velocity[ 1 ], velocity[ 0 ] ]
+		Vec2.unit( velocity )
+		Vec2.scale( velocity, speed )
+
+		velocity
+
+	computeEccentricityVectorFromStateVectors = ( position, velocity, mu ) ->
+		distance = Vec2.length( position )
+		speed    = Vec2.length( velocity )
+
+		eccentricityVector = Vec2.copy( position )
+		Vec2.scale( eccentricityVector, speed*speed / mu )
+		tmp = Vec2.copy( velocity )
+		Vec2.scale( tmp, Vec2.dot( position, velocity ) / mu )
+		Vec2.subtract( eccentricityVector, tmp )
+		tmp = Vec2.copy( position )
+		Vec2.scale( tmp, 1 / distance )
+		Vec2.subtract( eccentricityVector, tmp )
+
+		eccentricityVector
+
+	computeFocalDistance = ( semiMajorAxis, semiMinorAxis ) ->
+		a = semiMajorAxis
+		b = semiMinorAxis
+		
+		Math.sqrt( a*a - b*b )
+		
+	module
