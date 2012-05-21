@@ -1,39 +1,6 @@
 module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" ], ( Rendering, Camera, Vec2, Events, Input, Orbits ) ->
 	publishSelectOrbit = null
 
-	handleOrbitSelection = ( orbitSelection, currentInput ) ->
-		if Input.isKeyDown( currentInput, "left mouse button" )
-			if orbitSelection.currentlySelecting
-				orbitSelection.currentPoint =
-					Vec2.copy( currentInput.pointerPosition )
-			else
-				orbitSelection.currentlySelecting = true
-
-				orbitSelection.startingPoint =
-					Vec2.copy( currentInput.pointerPosition )
-				orbitSelection.currentPoint =
-					Vec2.copy( currentInput.pointerPosition )
-		else
-			if orbitSelection.currentlySelecting
-				orbit = Orbits.orbitFromEndpoints(
-					orbitSelection.startingPoint,
-					orbitSelection.currentPoint )
-
-				publishSelectOrbit( orbit )
-
-				orbitSelection.currentlySelecting = false
-
-	appendPlanet = ( renderables ) ->
-		renderable = Rendering.createRenderable( "filledCircle" )
-		renderable.resource =
-			color : "rgb(0,0,255)"
-			radius: 25
-
-		renderables.push( renderable )
-
-	appendOrbitSelection = ( orbitSelection ) ->
-		# nothing yet
-
 	module =
 		createRenderState: ->
 			renderState =
@@ -71,3 +38,40 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 			Camera.transformRenderables(
 				renderState.camera,
 				renderState.renderables )
+
+
+	handleOrbitSelection = ( orbitSelection, currentInput ) ->
+		if Input.isKeyDown( currentInput, "left mouse button" )
+			if orbitSelection.currentlySelecting
+				orbitSelection.currentPoint =
+					Vec2.copy( currentInput.pointerPosition )
+			else
+				orbitSelection.currentlySelecting = true
+
+				orbitSelection.startingPoint =
+					Vec2.copy( currentInput.pointerPosition )
+				orbitSelection.currentPoint =
+					Vec2.copy( currentInput.pointerPosition )
+		else
+			if orbitSelection.currentlySelecting
+				orbit = Orbits.orbitFromEndpoints(
+					orbitSelection.startingPoint,
+					orbitSelection.currentPoint )
+
+				publishSelectOrbit( orbit )
+
+				orbitSelection.currentlySelecting = false
+
+	appendPlanet = ( renderables ) ->
+		renderable = Rendering.createRenderable( "filledCircle" )
+		renderable.resource =
+			color : "rgb(0,0,255)"
+			radius: 25
+
+		renderables.push( renderable )
+
+	appendOrbitSelection = ( orbitSelection ) ->
+		# nothing yet
+
+
+	module
