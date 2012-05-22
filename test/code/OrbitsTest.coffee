@@ -82,4 +82,23 @@ module "OrbitsTest", [ "Orbits" ], ( Orbits ) ->
 					-expectedSpeed - tolerance,
 					-expectedSpeed + tolerance )
 
+			it "should work for circular orbits", ->
+				orbit =
+					semiMajorAxis: 10
+					semiMinorAxis: 10
+					focalToCenter: [ 0, 0 ]
+
+				[ position, velocity ] = Orbits.stateVectorsAtPeriapsis(
+					orbit,
+					mu )
+
+				tolerance = 0.01
+				expectedSpeed = 1 / Math.sqrt( 5 )
+
+				expect( position ).to.eql( [ -10, 0 ] )
+				expect( velocity[ 0 ] ).to.equal( 0 )
+				expect( velocity[ 1 ] ).to.be.within(
+					-expectedSpeed - tolerance,
+					-expectedSpeed + tolerance )
+
 load( "OrbitsTest" )

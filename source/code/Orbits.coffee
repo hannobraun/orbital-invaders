@@ -33,7 +33,12 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 				focalToCenter: focalToCenter
 
 		stateVectorsAtPeriapsis: ( orbit, mu ) ->
-			position = Vec2.copy( orbit.focalToCenter )
+			orbitIsCircular = orbit.semiMajorAxis == orbit.semiMinorAxis
+			position = if orbitIsCircular
+				position = [ orbit.semiMajorAxis, 0 ]
+			else
+				Vec2.copy( orbit.focalToCenter )
+
 			Vec2.normalize( position )
 			Vec2.scale( position, -orbit.semiMajorAxis )
 			Vec2.add( position, orbit.focalToCenter )
