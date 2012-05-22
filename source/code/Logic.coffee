@@ -21,9 +21,9 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 	addModifyTimeDilationHandler = ( guiSubscribers, gameState ) ->
 		Events.subscribe guiSubscribers, "modify time dilation", [ Events.anyTopic ], ( event ) ->
 			bodies = gameState.components.bodies
-
-			for entityId, body of bodies
-				body.timeDilation += event.factorModification
+			body   = bodies[ event.entityId ]
+			
+			body.timeDilation += event.factorModification
 
 
 	module =

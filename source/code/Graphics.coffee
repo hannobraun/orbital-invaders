@@ -85,12 +85,24 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 
 	handleTimeDilation = ( bodies, currentInput ) ->
 		factor = 0.01
+		selectionSize = 30
 
 		delta = currentInput.wheel.deltaY
 		if delta != 0
-			publishModifyTimeDilation(
-				"", 
-				delta * factor )
+			for entityId, body of bodies
+				mouseX = currentInput.pointerPosition[ 0 ]
+				mouseY = currentInput.pointerPosition[ 1 ]
+
+				mouseOverBody =
+					body.position[ 0 ] - selectionSize / 2 <= mouseX and
+					body.position[ 0 ] + selectionSize / 2 >= mouseX and
+					body.position[ 1 ] - selectionSize / 2 <= mouseY and
+					body.position[ 1 ] + selectionSize / 2 >= mouseY
+
+				if mouseOverBody
+					publishModifyTimeDilation(
+						entityId, 
+						delta * factor )
 
 		currentInput.wheel.deltaX = 0
 		currentInput.wheel.deltaY = 0
