@@ -45,7 +45,7 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 		auxiliaryEndpoint[ 0 ] = significantEndpoint[ 0 ]
 		auxiliaryEndpoint[ 1 ] = significantEndpoint[ 1 ]
 
-		Vec2.unit( auxiliaryEndpoint )
+		Vec2.normalize( auxiliaryEndpoint )
 		Vec2.scale( auxiliaryEndpoint, -auxiliaryDistance )
 
 	determineApses = ( auxiliaryEndpoint, significantEndpoint ) ->
@@ -89,7 +89,7 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 		focalDistance = computeFocalDistance( semiMajorAxis, semiMinorAxis )
 
 		focalToCenter = Vec2.copy( eccentricityVector )
-		Vec2.unit( focalToCenter )
+		Vec2.normalize( focalToCenter )
 		Vec2.scale( focalToCenter, -focalDistance )
 
 		focalToCenter
@@ -101,7 +101,7 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 
 		velocity = Vec2.copy( periapsis )
 		velocity = [ -velocity[ 1 ], velocity[ 0 ] ]
-		Vec2.unit( velocity )
+		Vec2.normalize( velocity )
 		Vec2.scale( velocity, speed )
 
 		velocity
