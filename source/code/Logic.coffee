@@ -1,4 +1,4 @@
-module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegrator", "Satellites", "Gravitation" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation ) ->
+module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegrator", "Satellites", "Gravitation", "Orbits" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits ) ->
 	entityFactories =
 		"satellite": Satellites.create
 
@@ -10,7 +10,13 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegr
 
 	addSelectOrbitHandler = ( guiSubscribers ) ->
 		Events.subscribe guiSubscribers, "select orbit", [ Events.anyTopic ], ( orbit ) ->
-			console.log( orbit )
+			[ position, velocity ] = Orbits.stateVectorsAtPeriapsis(
+				orbit,
+				Gravitation.mu )
+
+			createEntity( "satellite", {
+				position: position
+				velocity: velocity } )
 
 
 	module =
