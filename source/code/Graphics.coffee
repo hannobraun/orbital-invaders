@@ -34,6 +34,10 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 			appendOrbitSelection(
 				renderState.orbitSelection,
 				renderState.renderables )
+			appendSatellites(
+				gameState.components.bodies,
+				gameState.components.satellites,
+				renderState.renderables )
 
 
 			Camera.transformRenderables(
@@ -88,6 +92,25 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 				color: "rgb(255,255,255)"
 				semiMajorAxis: orbit.semiMajorAxis
 				semiMinorAxis: orbit.semiMinorAxis
+
+			renderables.push( renderable )
+
+	appendSatellites = ( bodies, satellites, renderables ) ->
+		size = [ 10, 10 ]
+
+		halfSize = Vec2.copy( size )
+		Vec2.scale( halfSize, 0.5 )
+
+		for entityId, satellite of satellites
+			body = bodies[ entityId ]
+
+			position = Vec2.copy( body.position )
+			Vec2.subtract( position, halfSize )
+
+			renderable = Rendering.createRenderable( "rectangle" )
+			renderable.position = position
+			renderable.resource =
+				size: size
 
 			renderables.push( renderable )
 
