@@ -1,4 +1,4 @@
-module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegrator", "Satellites" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites ) ->
+module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegrator", "Satellites", "Gravitation" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation ) ->
 	entityFactories =
 		"satellite": Satellites.create
 
@@ -44,3 +44,5 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegr
 				gameState.components.bodies,
 				passedTimeInS,
 				EulerIntegrator.integrate )
+			Gravitation.applyGravitation(
+				gameState.components.bodies )
