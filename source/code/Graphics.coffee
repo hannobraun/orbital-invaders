@@ -1,4 +1,4 @@
-module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" ], ( Rendering, Camera, Vec2, Events, Input, Orbits ) ->
+module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits", "Gravitation" ], ( Rendering, Camera, Vec2, Events, Input, Orbits, Gravitation ) ->
 	publishSelectOrbit = null
 
 	module =
@@ -61,7 +61,8 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 			if orbitSelection.currentlySelecting
 				orbit = Orbits.orbitFromEndpoints(
 					orbitSelection.startingPoint,
-					orbitSelection.currentPoint )
+					orbitSelection.currentPoint,
+					Gravitation.mu )
 
 				publishSelectOrbit( orbit )
 
@@ -79,7 +80,8 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 		if orbitSelection.currentlySelecting
 			orbit = Orbits.orbitFromEndpoints(
 				orbitSelection.startingPoint,
-				orbitSelection.currentPoint )
+				orbitSelection.currentPoint,
+				Gravitation.mu )
 
 			renderable = Rendering.createRenderable( "ellipse" )
 

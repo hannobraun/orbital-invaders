@@ -1,8 +1,7 @@
 Orbits = load( "Orbits" )
 
 describe "Orbits", ->
-	parameters =
-		mu: 2
+	mu = 2
 
 	describe "orbitFromEndpoints", ->
 		it "should create an orbit from two endpoints", ->
@@ -12,11 +11,11 @@ describe "Orbits", ->
 			orbitA = Orbits.orbitFromEndpoints(
 				endpointA,
 				endpointB,
-				parameters )
+				mu )
 			orbitB = Orbits.orbitFromEndpoints(
 				endpointB,
 				endpointA,
-				parameters )
+				mu )
 
 			tolerance = 0.01
 			expectedSemiMinorAxis = 10 * Math.sqrt( 2 )
@@ -40,10 +39,12 @@ describe "Orbits", ->
 
 			orbitA = Orbits.orbitFromEndpoints(
 				[  0, -10 ],
-				significantEndpoint )
+				significantEndpoint,
+				mu )
 			orbitB = Orbits.orbitFromEndpoints(
 				[ 10,   0 ],
-				significantEndpoint )
+				significantEndpoint,
+				mu )
 
 			tolerance = 0.01
 			expectedSemiMinorAxis = 10 * Math.sqrt( 2 )

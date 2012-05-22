@@ -1,13 +1,6 @@
 module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 	module =
-		mu: 5e4
-
-		orbitFromEndpoints: ( auxiliaryEndpoint, significantEndpoint, parameters ) ->
-			mu = if parameters?
-				mu = parameters.mu
-			else
-				module.mu
-
+		orbitFromEndpoints: ( auxiliaryEndpoint, significantEndpoint, mu ) ->
 			correctAuxiliaryEndpoint(
 				auxiliaryEndpoint,
 				significantEndpoint )
