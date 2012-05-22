@@ -1,22 +1,6 @@
-module "Logic", [ "Input", "Entities", "Vec2", "Events" ], ( Input, Entities, Vec2, Events ) ->
-	nextEntityId = 0
-
+module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegrator", "Satellites" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites ) ->
 	entityFactories =
-		"myEntity": ( args ) ->
-			movement =
-				center: args.center
-				radius: args.radius
-				speed : args.speed
-
-			id = nextEntityId
-			nextEntityId += 1
-
-			entity =
-				id: id
-				components:
-					"positions": [ 0, 0 ]
-					"movements": movement
-					"imageIds" : "images/star.png"
+		"satellite": Satellites.create
 
 	# There are functions for creating and destroying entities in the Entities
 	# module. We will mostly use shortcuts however. They are declared here and
@@ -50,4 +34,13 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events" ], ( Input, Entities, Ve
 
 			addSelectOrbitHandler( guiSubscribers )
 
+
+			createEntity( "satellite", {
+				position: [ 100, 100 ]
+				velocity: [ -10, 10 ] } )
+
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
+			Physics.update(
+				gameState.components.bodies,
+				passedTimeInS,
+				EulerIntegrator.integrate )
