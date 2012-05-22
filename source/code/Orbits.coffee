@@ -32,6 +32,29 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 				semiMinorAxis: semiMinorAxis
 				focalToCenter: focalToCenter
 
+		stateVectorsAtPeriapsis: ( orbit, mu ) ->
+			position = Vec2.copy( orbit.focalToCenter )
+			Vec2.normalize( position )
+			Vec2.scale( position, -orbit.semiMajorAxis )
+			Vec2.add( position, orbit.focalToCenter )
+
+			periapsisDistance = Vec2.length( position )
+			apoapsisDistance  =
+				orbit.semiMajorAxis*2 - Vec2.length( position )
+
+			eccentricity = computeEccentricity(
+				periapsisDistance,
+				apoapsisDistance )
+
+			velocity = computeVelocityAtPeriapsis(
+				position,
+				eccentricity,
+				orbit.semiMajorAxis,
+				mu )
+
+			[ position, velocity ]
+
+
 	correctAuxiliaryEndpoint = ( auxiliaryEndpoint, significantEndpoint ) ->
 		auxiliaryDistance = Vec2.length( auxiliaryEndpoint )
 
