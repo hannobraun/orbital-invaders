@@ -1,5 +1,6 @@
-module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits", "Gravitation" ], ( Rendering, Camera, Vec2, Events, Input, Orbits, Gravitation ) ->
-	publishSelectOrbit = null
+module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "Orbits", "Gravitation" ], ( Rendering, Camera, Vec2, Events, Input, Orbits, Gravitation ) ->
+	publishSelectOrbit        = null
+	publishModifyTimeDilation = null
 
 	module =
 		createRenderState: ->
@@ -20,12 +21,26 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits",
 					null,
 					orbit )
 
+			publishModifyTimeDilation = ( entityId, factorModification ) ->
+				event =
+					entityId: entityId
+					factorModification: factorModification
+
+				Events.publish(
+					renderState.guiSubscribers,
+					"modify time dilation",
+					null,
+					event )
+
 		updateRenderState: ( renderState, gameState, currentInput ) ->
 			renderState.renderables.length = 0
 
 
 			handleOrbitSelection(
 				renderState.orbitSelection,
+				currentInput )
+			handleTimeDilation(
+				gameState.components.bodies,
 				currentInput )
 
 
@@ -67,6 +82,18 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits",
 				publishSelectOrbit( orbit )
 
 				orbitSelection.currentlySelecting = false
+
+	handleTimeDilation = ( bodies, currentInput ) ->
+		factor = 0.01
+
+		delta = currentInput.wheel.deltaY
+		if delta != 0
+			publishModifyTimeDilation(
+				"", 
+				delta * factor )
+
+		currentInput.wheel.deltaX = 0
+		currentInput.wheel.deltaY = 0
 
 	appendPlanet = ( renderables ) ->
 		renderable = Rendering.createRenderable( "filledCircle" )

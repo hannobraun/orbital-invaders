@@ -1,4 +1,4 @@
-module "Logic", [ "Input", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits ) ->
+module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits ) ->
 	entityFactories =
 		"satellite": Satellites.create
 
@@ -17,6 +17,13 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events", "ModifiedPhysics", "Mod
 			createEntity( "satellite", {
 				position: position
 				velocity: velocity } )
+
+	addModifyTimeDilationHandler = ( guiSubscribers, gameState ) ->
+		Events.subscribe guiSubscribers, "modify time dilation", [ Events.anyTopic ], ( event ) ->
+			bodies = gameState.components.bodies
+
+			for entityId, body of bodies
+				body.timeDilation += event.factorModification
 
 
 	module =
@@ -38,7 +45,11 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events", "ModifiedPhysics", "Mod
 					gameState.components,
 					entityId )
 
-			addSelectOrbitHandler( guiSubscribers )
+			addSelectOrbitHandler(
+				guiSubscribers )
+			addModifyTimeDilationHandler(
+				guiSubscribers,
+				gameState )
 
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
 			Physics.update(
