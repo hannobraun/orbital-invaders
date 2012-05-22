@@ -92,7 +92,4 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "Input", "Orbits" 
 			renderables.push( renderable )
 
 
-
-
-
 	module
