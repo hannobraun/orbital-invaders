@@ -40,11 +40,6 @@ module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegr
 
 			addSelectOrbitHandler( guiSubscribers )
 
-
-			createEntity( "satellite", {
-				position: [ 100, 100 ]
-				velocity: [ -10, 10 ] } )
-
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
 			Physics.update(
 				gameState.components.bodies,
