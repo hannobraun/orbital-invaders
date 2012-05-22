@@ -7,6 +7,9 @@ module "Gravitation", [ "Vec2" ], ( Vec2 ) ->
 		mu: mu
 
 		applyGravitation: ( bodies, G ) ->
+			unless G?
+				G = module.G
+
 			for entityId, body of bodies
 				squaredDistance = Vec2.squaredLength( body.position )
 				forceMagnitude = G * body.mass / squaredDistance
