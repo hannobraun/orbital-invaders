@@ -1,4 +1,4 @@
-module "Satellites", [ "Physics" ], ( Physics ) ->
+module "Satellites", [ "ModifiedPhysics" ], ( Physics ) ->
 	nextEntityId = 0
 
 	module =

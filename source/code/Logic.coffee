@@ -1,4 +1,4 @@
-module "Logic", [ "Input", "Entities", "Vec2", "Events", "Physics", "EulerIntegrator", "Satellites", "Gravitation", "Orbits" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits ) ->
+module "Logic", [ "Input", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits ) ->
 	entityFactories =
 		"satellite": Satellites.create
 
