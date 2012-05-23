@@ -1,6 +1,9 @@
 module "Aliens", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 	nextEntityId = 0
 
+	initialHealth =
+		"missile": 5
+
 	module =
 		createMissile: ( args ) ->
 			angle    = Math.random() * Math.PI * 2
@@ -23,4 +26,5 @@ module "Aliens", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 				id: "missile#{ nextEntityId += 1 }"
 				components:
 					"bodies": body
-					"aliens": {}
+					"aliens":
+						health: initialHealth[ "missile" ]
