@@ -2,7 +2,7 @@ module "Satellites", [ "ModifiedPhysics" ], ( Physics ) ->
 	nextEntityId = 0
 
 	module =
-		create: ( args ) ->
+		createKiller: ( args ) ->
 			body = Physics.createBody()
 			body.position = args.position
 			body.velocity = args.velocity

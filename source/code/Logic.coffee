@@ -1,6 +1,6 @@
 module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits", "Aliens", "Planets" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits, Aliens, Planets ) ->
 	entityFactories =
-		"satellite": Satellites.create
+		"satellite": Satellites.createKiller
 		"missile"  : Aliens.createMissile
 
 	# There are functions for creating and destroying entities in the Entities
