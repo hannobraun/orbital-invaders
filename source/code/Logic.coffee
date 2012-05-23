@@ -72,6 +72,13 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				gameState.components.satellites,
 				gameState.components.aliens,
 				gameState.components.bodies )
+			Satellites.handleTargets(
+				gameState.components.satellites,
+				gameState.components.aliens,
+				passedTimeInS )
+			Aliens.handleAlienDeaths(
+				gameState.components.aliens,
+				destroyEntity )
 			Planets.checkAlienCollisions(
 				gameState.components.aliens,
 				gameState.components.bodies,
