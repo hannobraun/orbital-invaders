@@ -57,6 +57,10 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 				gameState.components.bodies,
 				gameState.components.aliens,
 				renderState.renderables )
+			appendSatelliteTargets(
+				gameState.components.satellites,
+				gameState.components.bodies,
+				renderState.renderables )
 
 
 			Camera.transformRenderables(
@@ -170,6 +174,24 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 				radius: 5
 
 			renderables.push( renderable )
+
+	appendSatelliteTargets = ( satellites, bodies, renderables ) ->
+		for satelliteId, satellite of satellites
+			satelliteBody = bodies[ satelliteId ]
+
+			laserStrength = 1 / satellite.targets.length
+
+			for targetId in satellite.targets
+				targetBody = bodies[ targetId ]
+
+				if targetBody?
+					renderable = Rendering.createRenderable( "line" )
+					renderable.resource =
+						color: "rgba(255,255,255,#{ laserStrength })"
+						start: satelliteBody.position
+						end  : targetBody.position
+
+					renderables.push( renderable )
 
 
 	module
