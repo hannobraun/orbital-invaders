@@ -1,4 +1,4 @@
-module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits", "Aliens" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits, Aliens ) ->
+module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits", "Aliens", "Planets" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits, Aliens, Planets ) ->
 	entityFactories =
 		"satellite": Satellites.create
 		"missile"  : Aliens.createMissile
@@ -68,3 +68,7 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				EulerIntegrator.integrate )
 			Gravitation.applyGravitation(
 				gameState.components.bodies )
+			Planets.checkAlienCollisions(
+				gameState.components.aliens,
+				gameState.components.bodies,
+				destroyEntity )
