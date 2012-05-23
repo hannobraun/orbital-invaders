@@ -1,6 +1,7 @@
-module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits ) ->
+module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits", "Aliens" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits, Aliens ) ->
 	entityFactories =
 		"satellite": Satellites.create
+		"missile"  : Aliens.createMissile
 
 	# There are functions for creating and destroying entities in the Entities
 	# module. We will mostly use shortcuts however. They are declared here and
@@ -50,6 +51,9 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 			addModifyTimeDilationHandler(
 				guiSubscribers,
 				gameState )
+
+			for i in [1..10]
+				createEntity( "missile" )
 
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
 			Physics.update(
