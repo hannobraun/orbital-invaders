@@ -8,7 +8,7 @@ module "Satellites", [ "ModifiedPhysics" ], ( Physics ) ->
 			body.velocity = args.velocity
 
 			entity =
-				id: nextEntityId += 1
+				id: "satellite#{ nextEntityId += 1 }"
 				components:
 					"bodies": body
 					"satellites": {}
