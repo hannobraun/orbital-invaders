@@ -53,6 +53,10 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 				gameState.components.bodies,
 				gameState.components.satellites,
 				renderState.renderables )
+			appendAliens(
+				gameState.components.bodies,
+				gameState.components.aliens,
+				renderState.renderables )
 
 
 			Camera.transformRenderables(
@@ -152,6 +156,18 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 			renderable.position = position
 			renderable.resource =
 				size: size
+
+			renderables.push( renderable )
+
+	appendAliens = ( bodies, aliens, renderables ) ->
+		for entityId, alien of aliens
+			body = bodies[ entityId ]
+
+			renderable = Rendering.createRenderable( "filledCircle" )
+			renderable.position = body.position
+			renderable.resource =
+				color : "rgb(0,255,0)"
+				radius: 5
 
 			renderables.push( renderable )
 
