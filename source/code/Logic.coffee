@@ -68,6 +68,10 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				gameState.components.bodies,
 				passedTimeInS,
 				EulerIntegrator.integrate )
+			Satellites.handleNearbyAliens(
+				gameState.components.satellites,
+				gameState.components.aliens,
+				gameState.components.bodies )
 			Planets.checkAlienCollisions(
 				gameState.components.aliens,
 				gameState.components.bodies,
