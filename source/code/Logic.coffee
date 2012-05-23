@@ -26,6 +26,9 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 			
 			body.timeDilation += event.factorModification
 
+			body.timeDilation = Math.max( 0.5, body.timeDilation )
+			body.timeDilation = Math.min( 3.0, body.timeDilation )
+
 
 	module =
 		createGameState: ->
