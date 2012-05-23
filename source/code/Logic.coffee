@@ -62,12 +62,12 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				createEntity( "missile" )
 
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
+			Gravitation.applyGravitation(
+				gameState.components.bodies )
 			Physics.update(
 				gameState.components.bodies,
 				passedTimeInS,
 				EulerIntegrator.integrate )
-			Gravitation.applyGravitation(
-				gameState.components.bodies )
 			Planets.checkAlienCollisions(
 				gameState.components.aliens,
 				gameState.components.bodies,
