@@ -28,3 +28,8 @@ module "Aliens", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 					"bodies": body
 					"aliens":
 						health: initialHealth[ "missile" ]
+
+		handleAlienDeaths: ( aliens, destroyEntity ) ->
+			for alienId, alien of aliens
+				if alien.health <= 0
+					destroyEntity( alienId )
