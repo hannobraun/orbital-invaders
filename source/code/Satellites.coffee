@@ -2,7 +2,9 @@ module "Satellites", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 	nextEntityId = 0
 
 	timeDilationMinDistance = 50
-	killerRange = 45
+
+	killerRange      = 45
+	killerDamagePerS = 1
 
 	module =
 		createKiller: ( args ) ->
@@ -14,12 +16,13 @@ module "Satellites", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 				id: "satellite#{ nextEntityId += 1 }"
 				components:
 					"bodies": body
-					"satellites": {}
+					"satellites":
+						targets: []
 
 		handleNearbyAliens: ( satellites, aliens, bodies ) ->
-			targets = []
-
 			for satelliteId, satellite of satellites
+				satellite.targets.length = 0
+
 				for alienId, alien of aliens
 					satelliteBody = bodies[ satelliteId ]
 					alienBody     = bodies[ alienId     ]
@@ -34,3 +37,17 @@ module "Satellites", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 
 					if timeDilationHasToReset
 						satelliteBody.timeDilation = 1.0
+
+					alienWithinReach =
+						squaredDistance <= killerRange*killerRange
+
+					if alienWithinReach
+						satellite.targets.push( alienId )
+
+		handleTargets: ( satellites, aliens, passedTimeInS ) ->
+			for satelliteId, satellite of satellites
+				for targetId in satellite.targets
+					alien = aliens[ targetId ]
+					alien.health -=
+						killerDamagePerS * passedTimeInS /
+						satellite.targets.length
