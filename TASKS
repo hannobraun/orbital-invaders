@@ -1,0 +1,4 @@
+2012-05-23:
+	Bug: Not all clicks seem to spawn a satellite.
+2012-05-23:
+	Bug: Orbit selection seems to register clicks that are outside the canvas.
