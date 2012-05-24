@@ -37,6 +37,10 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 		createGameState: ->
 			gameState =
 				components: {}
+				game:
+					over  : false
+					won   : null
+					health: 10
 
 		initGameState: ( gameState, guiSubscribers ) ->
 			# These are the shortcuts we will use for creating and destroying
