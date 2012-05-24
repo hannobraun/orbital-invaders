@@ -61,6 +61,9 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 				gameState.components.satellites,
 				gameState.components.bodies,
 				renderState.renderables )
+			appendStatus(
+				gameState.game,
+				renderState.renderables )
 
 
 			Camera.transformRenderables(
@@ -192,6 +195,42 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 						end  : targetBody.position
 
 					renderables.push( renderable )
+
+	appendStatus = ( game, renderables ) ->
+		populationLabel = Rendering.createRenderable( "text" )
+		populationLabel.position = [ -300, -290 ]
+		populationLabel.resource =
+			string: "Population:"
+			textColor: "rgb(255,255,255)"
+			centered: [ false, false ]
+
+		population = Rendering.createRenderable( "text" )
+		population.position = [ -240, -290 ]
+		population.resource =
+			string: "#{ game.population } million"
+			textColor: "rgb(255,255,255)"
+			centered: [ false, false ]
+
+
+		budgetLabel = Rendering.createRenderable( "text" )
+		budgetLabel.position = [ -300, -270 ]
+		budgetLabel.resource =
+			string: "Budget:"
+			textColor: "rgb(255,255,255)"
+			centered: [ false, false ]
+
+		budget = Rendering.createRenderable( "text" )
+		budget.position = [ -240, -270 ]
+		budget.resource =
+			string: "$#{ game.budget }M"
+			textColor: "rgb(255,255,255)"
+			centered: [ false, false ]
+
+
+		renderables.push( populationLabel )
+		renderables.push( population )
+		renderables.push( budgetLabel )
+		renderables.push( budget )
 
 
 	module
