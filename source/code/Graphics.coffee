@@ -64,6 +64,9 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 			appendStatus(
 				gameState.game,
 				renderState.renderables )
+			appendEndOfGameMessage(
+				gameState.game,
+				renderState.renderables )
 
 
 			Camera.transformRenderables(
@@ -232,5 +235,20 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 		renderables.push( budgetLabel )
 		renderables.push( budget )
 
+	appendEndOfGameMessage = ( game, renderables ) ->
+		if game.over
+			message = if game.won
+				"You win!"
+			else
+				"You lose"
+
+			renderable = Rendering.createRenderable( "text" )
+			renderable.resource =
+				string: message
+				font: "32px Arial Black"
+				textColor: "rgb(255,255,255)"
+				centered: [ true, false ]
+
+			renderables.push( renderable )
 
 	module
