@@ -4,20 +4,34 @@ module "Director", [], ->
 		events: [
 			{
 				timeInS: 0.0
-				type   : "spawn missile"
-				times  : 1 }
+				type: "spawn missile"
+				data:
+					times: 1 }
 			{
 				timeInS: 10.0
-				type   : "spawn missile"
-				times  : 2 }
+				type: "spawn missile"
+				data:
+					times: 2 }
 			{
 				timeInS: 20.0
-				type   : "spawn missile"
-				times  : 4 }
+				type: "spawn missile"
+				data:
+					times: 4 }
+			{
+				timeInS: 20.0
+				type: "funding"
+				data:
+					amount: 300 }
 			{
 				timeInS: 30.0
-				type   : "spawn missile"
-				times  : 10 } ]
+				type: "spawn missile"
+				data:
+					times: 6 }
+			{
+				timeInS: 40.0
+				type: "funding"
+				data:
+					amount: 300 } ]
 
 
 	length = ( map ) ->
@@ -34,10 +48,13 @@ module "Director", [], ->
 
 			if nextEvent?
 				if timeInS >= nextEvent.timeInS
-					for i in [1..nextEvent.times]
-						switch nextEvent.type
-							when "spawn missile"
+					switch nextEvent.type
+						when "spawn missile"
+							for i in [1..nextEvent.data.times]
 								createEntity( "missile" )
+
+						when "funding"
+							game.budget += nextEvent.data.amount
 
 					script.nextEventIndex += 1
 			else if length( aliens ) == 0

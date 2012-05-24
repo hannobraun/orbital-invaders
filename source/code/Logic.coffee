@@ -18,7 +18,7 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 					over      : false
 					won       : null
 					population: 500
-					budget    : 900
+					budget    : 300
 
 		initGameState: ( gameState, guiSubscribers ) ->
 			# These are the shortcuts we will use for creating and destroying
