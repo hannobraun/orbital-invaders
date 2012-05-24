@@ -16,3 +16,7 @@ module "Planets", [ "Vec2" ], ( Vec2 ) ->
 					destroyEntity( entityId )
 					game.population -= alien.damage
 					game.population = Math.max( 0, game.population )
+
+					if game.population == 0
+						game.over = true
+						game.won  = false
