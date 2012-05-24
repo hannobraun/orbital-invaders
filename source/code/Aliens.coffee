@@ -28,6 +28,7 @@ module "Aliens", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 					"bodies": body
 					"aliens":
 						health: initialHealth[ "missile" ]
+						damage: 50
 
 		handleAlienDeaths: ( aliens, destroyEntity ) ->
 			for alienId, alien of aliens

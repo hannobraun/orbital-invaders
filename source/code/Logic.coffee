@@ -87,6 +87,7 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 			Planets.checkAlienCollisions(
 				gameState.components.aliens,
 				gameState.components.bodies,
+				gameState.game,
 				destroyEntity )
 			Director.direct(
 				timeInS - gameState.startTime,

@@ -4,7 +4,7 @@ module "Planets", [ "Vec2" ], ( Vec2 ) ->
 	planetRadius = 25
 
 	module =
-		checkAlienCollisions: ( aliens, bodies, destroyEntity ) ->
+		checkAlienCollisions: ( aliens, bodies, game, destroyEntity ) ->
 			for entityId, alien of aliens
 				body = bodies[ entityId ]
 
@@ -14,3 +14,4 @@ module "Planets", [ "Vec2" ], ( Vec2 ) ->
 
 				if collidesWithPlanet
 					destroyEntity( entityId )
+					game.population -= alien.damage
