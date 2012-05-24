@@ -5,6 +5,7 @@ module "Satellites", [ "ModifiedPhysics", "Vec2", "Orbits", "Gravitation" ], ( P
 
 	killerRange      = 45
 	killerDamagePerS = 1
+	killerCost       = 300
 
 	module =
 		createKiller: ( args ) ->
@@ -20,13 +21,16 @@ module "Satellites", [ "ModifiedPhysics", "Vec2", "Orbits", "Gravitation" ], ( P
 						targets: []
 
 		launchSatellite: ( orbit, game, createEntity ) ->
-			[ position, velocity ] = Orbits.stateVectorsAtPeriapsis(
-				orbit,
-				Gravitation.mu )
+			if game.budget >= killerCost
+				[ position, velocity ] = Orbits.stateVectorsAtPeriapsis(
+					orbit,
+					Gravitation.mu )
 
-			createEntity( "satellite", {
-				position: position
-				velocity: velocity } )
+				createEntity( "satellite", {
+					position: position
+					velocity: velocity } )
+
+				game.budget -= killerCost
 
 		modifyTimeDilation: ( satelliteId, offset, bodies, satellites ) ->
 			if satellites[ satelliteId ]?
