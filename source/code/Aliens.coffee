@@ -2,7 +2,7 @@ module "Aliens", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 	nextEntityId = 0
 
 	initialHealth =
-		"missile": 2
+		"missile": 0.5
 
 	module =
 		createMissile: ( args ) ->
