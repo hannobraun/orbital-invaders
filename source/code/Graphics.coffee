@@ -93,7 +93,8 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 					orbitSelection.currentPoint,
 					Gravitation.mu )
 
-				publishSelectOrbit( orbit )
+				unless tooCloseToPlanet( orbit )
+					publishSelectOrbit( orbit )
 
 				orbitSelection.currentlySelecting = false
 
