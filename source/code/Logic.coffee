@@ -9,15 +9,6 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 	createEntity  = null
 	destroyEntity = null
 
-	addSelectOrbitHandler = ( guiSubscribers ) ->
-		Events.subscribe guiSubscribers, "select orbit", [ Events.anyTopic ], ( orbit ) ->
-			[ position, velocity ] = Orbits.stateVectorsAtPeriapsis(
-				orbit,
-				Gravitation.mu )
-
-			createEntity( "satellite", {
-				position: position
-				velocity: velocity } )
 
 	addModifyTimeDilationHandler = ( guiSubscribers, gameState ) ->
 		Events.subscribe guiSubscribers, "modify time dilation", [ Events.anyTopic ], ( event ) ->
@@ -57,8 +48,12 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 					gameState.components,
 					entityId )
 
-			addSelectOrbitHandler(
-				guiSubscribers )
+			Events.subscribe guiSubscribers, "select orbit", [ Events.anyTopic ], ( orbit ) ->
+				Satellites.launchSatellite(
+					orbit,
+					gameState.game,
+					createEntity )
+			
 			addModifyTimeDilationHandler(
 				guiSubscribers,
 				gameState )

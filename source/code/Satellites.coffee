@@ -1,4 +1,4 @@
-module "Satellites", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
+module "Satellites", [ "ModifiedPhysics", "Vec2", "Orbits", "Gravitation" ], ( Physics, Vec2, Orbits, Gravitation ) ->
 	nextEntityId = 0
 
 	timeDilationMinDistance = 50
@@ -18,6 +18,15 @@ module "Satellites", [ "ModifiedPhysics", "Vec2" ], ( Physics, Vec2 ) ->
 					"bodies": body
 					"satellites":
 						targets: []
+
+		launchSatellite: ( orbit, game, createEntity ) ->
+			[ position, velocity ] = Orbits.stateVectorsAtPeriapsis(
+				orbit,
+				Gravitation.mu )
+
+			createEntity( "satellite", {
+				position: position
+				velocity: velocity } )
 
 		handleNearbyAliens: ( satellites, aliens, bodies ) ->
 			for satelliteId, satellite of satellites
