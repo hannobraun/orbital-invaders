@@ -19,6 +19,8 @@ module "OrbitsTest", [ "Orbits" ], ( Orbits ) ->
 				tolerance = 0.01
 				expectedSemiMinorAxis = 10 * Math.sqrt( 2 )
 
+				expect( orbitA.periapsis ).to.eql( endpointA )
+				expect( orbitA.apoapsis ).to.eql( endpointB )
 				expect( orbitA.semiMajorAxis ).to.be.within(
 					15 - tolerance,
 					15 + tolerance )
@@ -48,6 +50,8 @@ module "OrbitsTest", [ "Orbits" ], ( Orbits ) ->
 				tolerance = 0.01
 				expectedSemiMinorAxis = 10 * Math.sqrt( 2 )
 
+				expect( orbitA.periapsis ).to.eql( [ -10, 0 ] )
+				expect( orbitA.apoapsis ).to.eql( significantEndpoint )
 				expect( orbitA.semiMajorAxis ).to.be.within(
 					15 - tolerance,
 					15 + tolerance )

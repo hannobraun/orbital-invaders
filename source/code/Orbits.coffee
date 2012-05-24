@@ -28,6 +28,8 @@ module "Orbits", [ "Vec2" ], ( Vec2 ) ->
 				mu )
 
 			orbit =
+				periapsis    : periapsis
+				apoapsis     : apoapsis
 				semiMajorAxis: semiMajorAxis
 				semiMinorAxis: semiMinorAxis
 				focalToCenter: focalToCenter
