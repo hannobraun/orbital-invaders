@@ -44,4 +44,4 @@ module "Director", [], ->
 					script.nextEventIndex += 1
 			else if length( aliens ) == 0
 				game.over = true
-				game.won  = game.health > 0
+				game.won  = game.population > 0
