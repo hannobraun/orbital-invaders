@@ -1,4 +1,4 @@
-module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits", "Aliens", "Planets" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits, Aliens, Planets ) ->
+module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysics", "ModifiedEulerIntegrator", "Satellites", "Gravitation", "Orbits", "Aliens", "Planets", "Director" ], ( Input, Entities, Vec2, Events, Physics, EulerIntegrator, Satellites, Gravitation, Orbits, Aliens, Planets, Director ) ->
 	entityFactories =
 		"satellite": Satellites.createKiller
 		"missile"  : Aliens.createMissile
@@ -62,10 +62,10 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				guiSubscribers,
 				gameState )
 
-			for i in [1..10]
-				createEntity( "missile" )
-
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
+			unless gameState.startTime?
+				gameState.startTime = timeInS
+
 			Gravitation.applyGravitation(
 				gameState.components.bodies )
 			Physics.update(
@@ -87,3 +87,8 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				gameState.components.aliens,
 				gameState.components.bodies,
 				destroyEntity )
+			Director.direct(
+				timeInS - gameState.startTime,
+				gameState.game,
+				gameState.components.aliens,
+				createEntity )
