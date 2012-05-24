@@ -10,15 +10,21 @@ module "Planets", [ "Vec2" ], ( Vec2 ) ->
 
 
 	module =
-		checkAlienCollisions: ( aliens, bodies, game, destroyEntity ) ->
-			for entityId, alien of aliens
-				body = bodies[ entityId ]
+		checkAlienCollisions: ( aliens, satellites, bodies, game, destroyEntity ) ->
+			for alienId, alien of aliens
+				body = bodies[ alienId ]
 
 				if collidesWithPlanet( body )
-					destroyEntity( entityId )
+					destroyEntity( alienId )
 					game.population -= alien.damage
 					game.population = Math.max( 0, game.population )
 
 					if game.population == 0
 						game.over = true
 						game.won  = false
+
+			for satelliteId, satellite of satellites
+				body = bodies[ satelliteId ]
+
+				if collidesWithPlanet( body )
+					destroyEntity( satelliteId )

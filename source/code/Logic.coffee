@@ -86,6 +86,7 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 				destroyEntity )
 			Planets.checkAlienCollisions(
 				gameState.components.aliens,
+				gameState.components.satellites,
 				gameState.components.bodies,
 				gameState.game,
 				destroyEntity )
