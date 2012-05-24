@@ -10,20 +10,6 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 	destroyEntity = null
 
 
-	addModifyTimeDilationHandler = ( guiSubscribers, gameState ) ->
-		Events.subscribe guiSubscribers, "modify time dilation", [ Events.anyTopic ], ( event ) ->
-			bodies     = gameState.components.bodies
-			satellites = gameState.components.satellites
-
-			body = bodies[ event.entityId ]
-
-			if satellites[ event.entityId ]?
-				body.timeDilation += event.factorModification
-
-				body.timeDilation = Math.max( 0.5, body.timeDilation )
-				body.timeDilation = Math.min( 3.0, body.timeDilation )
-
-
 	module =
 		createGameState: ->
 			gameState =
@@ -53,10 +39,14 @@ module "Logic", [ "ModifiedInput", "Entities", "Vec2", "Events", "ModifiedPhysic
 					orbit,
 					gameState.game,
 					createEntity )
-			
-			addModifyTimeDilationHandler(
-				guiSubscribers,
-				gameState )
+
+			Events.subscribe guiSubscribers, "modify time dilation", [ Events.anyTopic ], ( event ) ->
+				Satellites.modifyTimeDilation(
+					event.entityId,
+					event.offset,
+					gameState.components.bodies,
+					gameState.components.satellites )
+
 
 		updateGameState: ( gameState, currentInput, timeInS, passedTimeInS ) ->
 			unless gameState.startTime?

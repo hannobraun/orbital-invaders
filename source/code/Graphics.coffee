@@ -21,10 +21,10 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 					null,
 					orbit )
 
-			publishModifyTimeDilation = ( entityId, factorModification ) ->
+			publishModifyTimeDilation = ( entityId, factorOffset ) ->
 				event =
 					entityId: entityId
-					factorModification: factorModification
+					offset  : factorOffset
 
 				Events.publish(
 					renderState.guiSubscribers,

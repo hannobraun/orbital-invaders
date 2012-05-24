@@ -28,6 +28,15 @@ module "Satellites", [ "ModifiedPhysics", "Vec2", "Orbits", "Gravitation" ], ( P
 				position: position
 				velocity: velocity } )
 
+		modifyTimeDilation: ( satelliteId, offset, bodies, satellites ) ->
+			if satellites[ satelliteId ]?
+				body = bodies[ satelliteId ]
+
+				body.timeDilation += offset
+
+				body.timeDilation = Math.max( 0.5, body.timeDilation )
+				body.timeDilation = Math.min( 3.0, body.timeDilation )
+
 		handleNearbyAliens: ( satellites, aliens, bodies ) ->
 			for satelliteId, satellite of satellites
 				satellite.targets.length = 0
