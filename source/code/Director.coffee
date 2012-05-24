@@ -35,7 +35,9 @@ module "Director", [], ->
 			if nextEvent?
 				if timeInS >= nextEvent.timeInS
 					for i in [1..nextEvent.times]
-						createEntity( "missile" )
+						switch nextEvent.type
+							when "spawn missile"
+								createEntity( "missile" )
 
 					script.nextEventIndex += 1
 			else if length( aliens ) == 0
