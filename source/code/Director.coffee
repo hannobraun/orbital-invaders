@@ -6,22 +6,22 @@ module "Director", [], ->
 				timeInS: 0.0
 				event:
 					type  : "spawn missile"
-					number: 1 }
+					times: 1 }
 			{
 				timeInS: 10.0
 				event:
 					type  : "spawn missile"
-					number: 2 }
+					times: 2 }
 			{
 				timeInS: 20.0
 				event:
 					type  : "spawn missile"
-					number: 4 }
+					times: 4 }
 			{
 				timeInS: 30.0
 				event:
 					type  : "spawn missile"
-					number: 10 } ]
+					times: 10 } ]
 
 
 	length = ( map ) ->
@@ -38,7 +38,7 @@ module "Director", [], ->
 
 			if nextEvent?
 				if timeInS >= nextEvent.timeInS
-					for i in [1..nextEvent.event.number]
+					for i in [1..nextEvent.event.times]
 						createEntity( "missile" )
 
 					script.nextEventIndex += 1
