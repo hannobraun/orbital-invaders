@@ -136,13 +136,7 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 				orbitSelection.currentPoint,
 				Gravitation.mu )
 
-			squaredRadius = Planets.planetRadius*Planets.planetRadius
-
-			tooCloseToPlanet =
-				Vec2.squaredLength( orbitSelection.startingPoint ) <= squaredRadius or
-				Vec2.squaredLength( orbitSelection.currentPoint ) <= squaredRadius
-
-			color = if tooCloseToPlanet
+			color = if tooCloseToPlanet( orbit )
 				"rgb(255,0,0)"
 			else
 				"rgb(255,255,255)"
@@ -160,6 +154,10 @@ module "Graphics", [ "Rendering", "Camera", "Vec2", "Events", "ModifiedInput", "
 				semiMinorAxis: orbit.semiMinorAxis
 
 			renderables.push( renderable )
+
+	tooCloseToPlanet = ( orbit ) ->
+		Vec2.squaredLength( orbit.periapsis ) <=
+			Planets.planetRadius*Planets.planetRadius
 
 	appendSatellites = ( bodies, satellites, renderables ) ->
 		size = [ 10, 10 ]
