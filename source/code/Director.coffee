@@ -38,9 +38,7 @@ module "Director", [], ->
 
 			if nextEvent?
 				if timeInS >= nextEvent.timeInS
-					console.log( "1!" )
 					for i in [1..nextEvent.event.number]
-						console.log( "2!" )
 						createEntity( "missile" )
 
 					script.nextEventIndex += 1
