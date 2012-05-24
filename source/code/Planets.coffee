@@ -3,16 +3,18 @@ module "Planets", [ "Vec2" ], ( Vec2 ) ->
 
 	planetRadius = 25
 
+
+	collidesWithPlanet = ( body ) ->
+		Vec2.squaredLength( body.position ) <=
+			planetRadius*planetRadius
+
+
 	module =
 		checkAlienCollisions: ( aliens, bodies, game, destroyEntity ) ->
 			for entityId, alien of aliens
 				body = bodies[ entityId ]
 
-				collidesWithPlanet =
-					Vec2.squaredLength( body.position ) <=
-					planetRadius*planetRadius
-
-				if collidesWithPlanet
+				if collidesWithPlanet( body )
 					destroyEntity( entityId )
 					game.population -= alien.damage
 					game.population = Math.max( 0, game.population )
